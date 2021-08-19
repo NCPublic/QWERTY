@@ -3,7 +3,7 @@
 
     <Color x:Key="AppBlack">#000000</Color>
     <SolidColorBrush x:Key="AppBlackBrush" Color="{StaticResource AppBlack}"/>
-
+    
     <Color x:Key="AppGray">#bdbdbd</Color>
     <SolidColorBrush x:Key="AppGrayBrush" Color="{StaticResource AppGray}"/>
 

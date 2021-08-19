@@ -6,17 +6,37 @@
         xmlns:local="clr-namespace:Querty.WPF"
         xmlns:custom="clr-namespace:QUERTY.SlidingTextControl;assembly=QUERTY.SlidingTextControl"
         mc:Ignorable="d"
-        Title="QUERTY" Height="450" Width="800">
+        Title="QUERTY" Height="600" Width="800">
     <Window.DataContext>
         <local:MainViewModel/>
     </Window.DataContext>
     
     <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <custom:SlidingText Text="{Binding WelcomeMessage}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Typing Trainer" FontSize="{StaticResource FontsizeLarge}" HorizontalAlignment="Center" Margin="0 0 0 50"/>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50">
+            <custom:SlidingText Text="{Binding TextToType, UpdateSourceTrigger=PropertyChanged}"
                                 FontFamily="{StaticResource RobotoRegular}"
                                 FontSize="{StaticResource FontsizeMedium}"
-                                Margin="400 0 0 0" MinWidth="410"/>
+                                Margin="390 0 0 0" MinWidth="390"/>      
+        </StackPanel>
+
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Width="400">
+            <TextBlock Text="Words to choose from" FontSize="{StaticResource FontsizeSmall}" Margin="0 0 0 20"/>
+            <TextBox FontSize="{StaticResource FontsizeSmall}" TextWrapping="Wrap" Padding="2" Margin="0 0 0 20"
+                         Text="{Binding TextToType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Style="{StaticResource StandardButton}" Content="Generate Practise Text" HorizontalAlignment="Left" Margin="0 0 0 20"/>
+            <ComboBox HorizontalAlignment="Left" Width="100" Height="25" FontSize="{StaticResource FontsizeSmall}">
+                <ComboBoxItem Content="30" FontSize="{StaticResource FontsizeSmall}"/>
+                <ComboBoxItem Content="50" FontSize="{StaticResource FontsizeSmall}"/>
+                <ComboBoxItem Content="100" FontSize="{StaticResource FontsizeSmall}"/>
+            </ComboBox>
 
         </StackPanel>
     </Grid>

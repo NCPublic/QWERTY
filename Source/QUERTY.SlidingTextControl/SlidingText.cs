@@ -172,16 +172,20 @@ namespace QUERTY.SlidingTextControl
 
             #region Generate inline list and populate the textbox
 
-            // Make an array of runs for the text to type           
-            _textAsRuns = new Run[Text.Length];
-
-            // Populate the array and the textbox, manipulate only the array items
-            for (int i = 0; i < Text.Length; i++)
+            if(Text.Length > 0)
             {
-                var nextRun = new Run(Text[i].ToString());
-                _textAsRuns[i] = nextRun;
-                _animatedTextBlock.Inlines.Add(nextRun);
+                // Make an array of runs for the text to type           
+                _textAsRuns = new Run[Text.Length];
+
+                // Populate the array and the textbox, manipulate only the array items
+                for (int i = 0; i < Text.Length; i++)
+                {
+                    var nextRun = new Run(Text[i].ToString());
+                    _textAsRuns[i] = nextRun;
+                    _animatedTextBlock.Inlines.Add(nextRun);
+                }
             }
+
 
             #endregion
 
