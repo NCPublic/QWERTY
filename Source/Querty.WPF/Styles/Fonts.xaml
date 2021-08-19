@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <!--Font families-->
+    <FontFamily x:Key="RobotoLight">pack://application:,,,/Resources/Fonts/#Roboto Mono Light</FontFamily>
+    <FontFamily x:Key="RobotoRegular">pack://application:,,,/Resources/Fonts/#Roboto Mono Regular</FontFamily>
+    <FontFamily x:Key="RobotoBold">pack://application:,,,/Resources/Fonts/#Roboto Mono Bold</FontFamily>
+
+    <!--Font sizes-->
+    <system:Double x:Key="FontsizeSmall" >14</system:Double>
+    <system:Double x:Key="FontsizeMedium" >24</system:Double>
+    <system:Double x:Key="FontsizeLarge" >36</system:Double>
+    
+    <!--Base style for all controls-->
+    <Style TargetType="Control" x:Key="BaseStyleControl">
+        <Setter Property="FontFamily" Value="{StaticResource RobotoRegular}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontsizeMedium}"/>
+    </Style>
+
+    <!--Base style for all textblocks-->
+    <Style TargetType="TextBlock" x:Key="BaseStyleTextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource RobotoRegular}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontsizeMedium}"/>        
+    </Style>
+
+    <!--Distribute base styles as default for all controls-->
+    <Style TargetType="Button" BasedOn="{StaticResource BaseStyleControl}"/>
+    <Style TargetType="TextBox" BasedOn="{StaticResource BaseStyleControl}"/>
+    <Style TargetType="Label" BasedOn="{StaticResource BaseStyleControl}"/>
+    <Style TargetType="TextBlock" BasedOn="{StaticResource BaseStyleTextBlock}"/>
+
+</ResourceDictionary>

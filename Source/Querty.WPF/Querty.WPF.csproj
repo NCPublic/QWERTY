@@ -6,4 +6,21 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="Resources\Fonts\RobotoMono-Bold.ttf" />
+    <None Remove="Resources\Fonts\RobotoMono-Light.ttf" />
+    <None Remove="Resources\Fonts\RobotoMono-Regular.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\RobotoMono-Bold.ttf" />
+    <Resource Include="Resources\Fonts\RobotoMono-Light.ttf" />
+    <Resource Include="Resources\Fonts\RobotoMono-Regular.ttf" />
+  </ItemGroup>
+
 </Project>
