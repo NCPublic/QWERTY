@@ -23,36 +23,68 @@
         </Grid.RowDefinitions>
 
         <!--Title-->
-        <Border Grid.Row="0" BorderBrush="{StaticResource AppBlackBrush}" BorderThickness="0 0 0 1" Margin="0 0 0 50" HorizontalAlignment="Center" Padding="0 0 0 5">
-            <TextBlock Text="Typing Trainer" FontSize="{StaticResource FontsizeLarge}" HorizontalAlignment="Center"/>            
+        <Border Grid.Row="0" 
+                BorderBrush="{StaticResource AppBlackBrush}" BorderThickness="0 0 0 1" 
+                Margin="0 0 0 50" 
+                Padding="0 0 0 5"
+                HorizontalAlignment="Center" >
+            
+            <TextBlock Text="Typing Trainer" 
+                       FontSize="{StaticResource FontsizeLarge}" 
+                       HorizontalAlignment="Center"/>            
         </Border>
 
         <!--Sliding Text-->
-        <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50">
-            <custom:SlidingText Text="{Binding TextToType, UpdateSourceTrigger=PropertyChanged}"                              
-                                FontFamily="{StaticResource RobotoLight}"
-                                FontSize="{StaticResource FontsizeMedium}"
-                                MarkFill="{StaticResource AppBlueBrush}"
-                                Margin="{Binding ActualWidth, ElementName=root, Converter={local:WidthToThicknessConverter}}" 
-                                MinWidth="{Binding ActualWidth, ElementName=root, Converter={local:WidthToMinWidthConverter}}"/>      
+        <StackPanel Grid.Row="1" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Margin="0 0 0 50">
+       
+            <!--Sliding text control-->
+            <ContentControl Content="{Binding SlidingTextControl}" DataContext="{Binding}">
+                <ContentControl.Resources>
+                    <Style TargetType="custom:SlidingText">
+                        <Setter Property="Text" Value="{Binding TextToType}"/>
+                        <Setter Property="FontFamily" Value="{StaticResource RobotoLight}"/>
+                        <Setter Property="FontSize" Value="{StaticResource FontsizeMedium}"/>
+                        <Setter Property="BoldFontFamily" Value="{StaticResource RobotoBold}"/>
+                        <Setter Property="MarkFill" Value="{StaticResource AppBlueBrush}"/>
+                        <Setter Property="Margin" Value="{Binding ActualWidth, ElementName=root, Converter={local:WidthToThicknessConverter}}"/>
+                        <Setter Property="MinWidth" Value="{Binding ActualWidth, ElementName=root, Converter={local:WidthToMinWidthConverter}}"/>
+                    </Style>
+                </ContentControl.Resources>
+            </ContentControl>
         </StackPanel>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" MaxWidth="600">
 
             <!--Seed Label-->
-            <TextBlock Text="Seed Words" FontSize="{StaticResource FontsizeSmall}" FontFamily="{StaticResource RobotoRegular}" Margin="0 0 0 10"/>
+            <TextBlock Text="Seed Words" 
+                       FontSize="{StaticResource FontsizeSmall}" FontFamily="{StaticResource RobotoRegular}" 
+                       Margin="0 0 0 10"/>
             
             <!--Seed words-->
-            <Border BorderBrush="{StaticResource AppGrayBrush}" BorderThickness="1" CornerRadius="5" Padding="5"  Margin="0 0 0 20">
-                <TextBox Grid.Column="1" FontSize="{StaticResource FontsizeSmall}" TextWrapping="Wrap" MinHeight="150" MinWidth="250"
-                         BorderBrush="Transparent" BorderThickness="0"
-                         Text="{Binding TextToType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>                
+            <Border BorderBrush="{StaticResource AppGrayBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="5" 
+                    Padding="5"  
+                    Margin="0 0 0 20">
+                <TextBox x:Name="seed" Grid.Column="1" 
+                         FontSize="{StaticResource FontsizeSmall}" 
+                         TextWrapping="Wrap" 
+                         MinHeight="150" MinWidth="450"
+                         BorderBrush="Transparent" 
+                         BorderThickness="0"
+                         Text="{Binding TextToType}"/>                
             </Border>
             
             <!--Button to reload-->
-            <Button Style="{StaticResource StandardButton}" VerticalAlignment="Bottom"
+            <Button Style="{StaticResource StandardButton}" 
+                    Command="{Binding RefreshCommand}"
+                    VerticalAlignment="Bottom" 
                     Content="Load Excercise" 
-                    HorizontalAlignment="Center" Margin="0 0 20 0"/>
+                    HorizontalAlignment="Center" 
+                    Margin="0 0 20 0"/>
 
         </StackPanel>
     </Grid>

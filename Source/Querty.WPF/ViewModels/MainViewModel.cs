@@ -1,6 +1,8 @@
-﻿using System;
+﻿using QUERTY.SlidingTextControl;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Input;
 
 namespace Querty.WPF
 {
@@ -10,6 +12,10 @@ namespace Querty.WPF
     public class MainViewModel : BaseViewModel
     {
         private string _textToType;
+
+        /// <summary>
+        /// The text the user has to type
+        /// </summary>
         public string TextToType
         {
             get
@@ -23,9 +29,32 @@ namespace Querty.WPF
             }
         }
 
+
+        private SlidingText _slidingTextControl;
+
+        /// <summary>
+        /// The control that displays the text and slides it to the left while the user is typing
+        /// </summary>
+        public SlidingText SlidingTextControl
+        {
+            get
+            {
+                return _slidingTextControl;
+            }
+            set
+            {
+                _slidingTextControl = value;
+                OnPropertyChanged(nameof(SlidingTextControl));
+            }
+        }
+
+        public ICommand RefreshCommand { get; private set; }
+
         public MainViewModel()
         {
-            _textToType = "Weit hinten, hinter den Wortbergen, fern der Länder Vokalien und Konsonantien leben die Blindtexte. Abgeschieden wohnen sie in Buchstabhausen an der Küste des Semantik, eines großen Sprachozeans. Ein kleines Bächlein namens Duden fließt durch ihren Ort und versorgt sie mit den nötigen Regelialien. Es ist ein paradiesmatisches Land, in dem";
+            _textToType = "Hello World";
+            SlidingTextControl = new SlidingText();
+            RefreshCommand = new RelayCommand(() => SlidingTextControl.Refresh() );
         }
     }
 }

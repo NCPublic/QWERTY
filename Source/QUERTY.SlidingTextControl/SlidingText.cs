@@ -66,7 +66,6 @@ namespace QUERTY.SlidingTextControl
         /// </summary>
         private string _lastUserInput = string.Empty;
 
-        /// <summary>
         /// The next character that needs to be typed
         /// </summary>
         private string _nextChar { get { return Text[_index].ToString(); } }
@@ -154,7 +153,24 @@ namespace QUERTY.SlidingTextControl
             DependencyProperty.Register("SlideTimeMS", typeof(int), typeof(SlidingText), new PropertyMetadata(150));
 
 
+        /// <summary>
+        /// The font family for bold characters
+        /// </summary>
+        public FontFamily BoldFontFamily
+        {
+            get { return (FontFamily)GetValue(BoldFontFamilyProperty); }
+            set { SetValue(BoldFontFamilyProperty, value); }
+        }
+
+        /// <summary>
+        /// Dependency property for bold letters as custom font family
+        /// </summary>
+        public static readonly DependencyProperty BoldFontFamilyProperty =
+            DependencyProperty.Register("BoldFontFamily", typeof(FontFamily), typeof(SlidingText), new PropertyMetadata(null));
+
+
         #endregion
+
 
         #region Initialization
 
@@ -170,33 +186,18 @@ namespace QUERTY.SlidingTextControl
             // Measure the constant character length of a mono spaced font family
             _characterWidth = MeasureString("a").Width;
 
-            #region Generate inline list and populate the textbox
+           
 
-            if(Text.Length > 0)
-            {
-                // Make an array of runs for the text to type           
-                _textAsRuns = new Run[Text.Length];
-
-                // Populate the array and the textbox, manipulate only the array items
-                for (int i = 0; i < Text.Length; i++)
-                {
-                    var nextRun = new Run(Text[i].ToString());
-                    _textAsRuns[i] = nextRun;
-                    _animatedTextBlock.Inlines.Add(nextRun);
-                }
-            }
-
-
-            #endregion
+            InitializeRuns();
 
             #region Initialize all styles
 
             _nextPending = new Style(typeof(Run));
-            _nextPending.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.Bold));
+            _nextPending.Setters.Add(new Setter(TextBlock.FontFamilyProperty, BoldFontFamily));
             _nextPending.Setters.Add(new Setter(TextBlock.ForegroundProperty, Brushes.Black));
 
             _nextIncorrect = new Style(typeof(Run));
-            _nextIncorrect.Setters.Add(new Setter(TextBlock.FontWeightProperty, FontWeights.Bold));
+            _nextIncorrect.Setters.Add(new Setter(TextBlock.FontFamilyProperty, BoldFontFamily));
             _nextIncorrect.Setters.Add(new Setter(TextBlock.ForegroundProperty, Brushes.Red));
 
             _submittedCorrect = new Style(typeof(Run));
@@ -221,12 +222,48 @@ namespace QUERTY.SlidingTextControl
             base.OnApplyTemplate();
         }
 
+        /// <summary>
+        /// Initalize a list of Runs for the given text to ease editing
+        /// </summary>
+        private void InitializeRuns()
+        {
+            // Make an array of runs for the text to type           
+            _textAsRuns = new Run[Text.Length];
+
+            // Populate the array and the textbox, manipulate only the array items
+            for (int i = 0; i < Text.Length; i++)
+            {
+                var nextRun = new Run(Text[i].ToString());
+                _textAsRuns[i] = nextRun;
+                _animatedTextBlock.Inlines.Add(nextRun);
+            }            
+        }
+
         static SlidingText()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SlidingText), new FrameworkPropertyMetadata(typeof(SlidingText)));
         }
 
         #endregion
+
+        /// <summary>
+        /// Whenever the text changed, call this method to reset everything
+        /// </summary>
+        public void Refresh()
+        {
+            _index = 0;
+            _slidedDistance = 0;
+
+            _animatedTextBlock.Inlines.Clear();
+
+            _lastUserInput = string.Empty;
+            _lastInputCorrect = true;
+            _textAsRuns = null;
+
+            InitializeRuns();
+            AnimateToStart();
+            EvaulateInput();
+    }
 
         #region Event handlers
 
@@ -310,12 +347,20 @@ namespace QUERTY.SlidingTextControl
             }
             else
             {
-                _lastInputCorrect = false;
-                if (_nextChar == " ")
+                // After refreshing
+                if (_lastUserInput == string.Empty)
                 {
-                    _textAsRuns[_index].Text = "_";
+                    _textAsRuns[_index].Style = _nextPending;
                 }
-                _textAsRuns[_index].Style = _nextIncorrect;
+                else
+                { 
+                    _lastInputCorrect = false;
+                    if (_nextChar == " ")
+                    {
+                        _textAsRuns[_index].Text = "_";
+                    }
+                    _textAsRuns[_index].Style = _nextIncorrect;                
+                }
             }
         }
 
@@ -326,7 +371,6 @@ namespace QUERTY.SlidingTextControl
         /// </summary>
         private void AnimateTextBlockSlide()
         {
-
             _slidedDistance += _characterWidth;
             var newThickness = new Thickness(-_slidedDistance, 0, 0, 0);
 
@@ -345,6 +389,23 @@ namespace QUERTY.SlidingTextControl
             storyboard.Begin(_animatedTextBlock);
         }
 
+
+        private void AnimateToStart()
+        {
+            var newThickness = new Thickness(0);
+
+            var storyboard = new Storyboard();
+            var slidingAnimation = new ThicknessAnimation()
+            {
+                Duration = new Duration(TimeSpan.FromMilliseconds(500)),
+                To = newThickness,
+            };
+
+            Storyboard.SetTargetProperty(slidingAnimation, new PropertyPath("Margin"));
+            storyboard.Children.Add(slidingAnimation);
+
+            storyboard.Begin(_animatedTextBlock);
+        }
 
         #endregion
 
