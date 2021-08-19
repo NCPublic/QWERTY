@@ -1,0 +1,7 @@
+- Opacity mask around sliding text
+- Game logic to load new game, add new words (max. 100 words)
+- Enable disable buttons when new seed words were entered
+- Typing stats (speed, accuarcy)
+- Live typing feedback (speedometer, colors, wheel, bar,)
+- Light/Dark theme
+- Language support
