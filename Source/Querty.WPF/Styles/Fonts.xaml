@@ -13,14 +13,14 @@
     
     <!--Base style for all controls-->
     <Style TargetType="Control" x:Key="BaseStyleControl">
-        <Setter Property="FontFamily" Value="{StaticResource RobotoRegular}"/>
-        <Setter Property="FontSize" Value="{StaticResource FontsizeMedium}"/>
+        <Setter Property="FontFamily" Value="{StaticResource RobotoLight}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontsizeSmall}"/>
     </Style>
 
     <!--Base style for all textblocks-->
     <Style TargetType="TextBlock" x:Key="BaseStyleTextBlock">
-        <Setter Property="FontFamily" Value="{StaticResource RobotoRegular}"/>
-        <Setter Property="FontSize" Value="{StaticResource FontsizeMedium}"/>        
+        <Setter Property="FontFamily" Value="{StaticResource RobotoLight}"/>
+        <Setter Property="FontSize" Value="{StaticResource FontsizeSmall}"/>        
     </Style>
 
     <!--Distribute base styles as default for all controls-->

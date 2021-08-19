@@ -4,27 +4,34 @@
     <!--Standard button-->
     <Style TargetType="Button" x:Key="StandardButton" BasedOn="{StaticResource BaseStyleControl}">
         <Setter Property="FontSize" Value="{StaticResource FontsizeSmall}"/>
+        <Setter Property="FontFamily" Value="{StaticResource RobotoRegular}"/>
         <Setter Property="Foreground" Value="{StaticResource AppBlackBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource AppGrayBrush}"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="container"                            
                             Background="{TemplateBinding Background}"
-                            Padding="5 2">
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="0.7"
+                            CornerRadius="5"
+                            Padding="7 5">
                         <TextBlock x:Name="textBlock" 
                                    Foreground="{TemplateBinding Foreground}"
-                               Text="{TemplateBinding Content}" 
-                               FontSize="{TemplateBinding FontSize}"/>
+                                   FontFamily="{TemplateBinding FontFamily}"
+                                   Text="{TemplateBinding Content}" 
+                                   FontSize="{TemplateBinding FontSize}"/>
                     </Border>
                     
                     <ControlTemplate.Triggers>
                         <EventTrigger RoutedEvent="MouseEnter">
                             <BeginStoryboard>
-                                <Storyboard>
-                                    <ColorAnimation To="{StaticResource AppBlack}" Duration="0:0:0.5" 
+                                <Storyboard>                                    
+                                    <ColorAnimation To="{StaticResource AppGray}" Duration="0:0:0.2" 
                                                     Storyboard.TargetName="container" Storyboard.TargetProperty="Background.Color"/>
-                                    <ColorAnimation To="{StaticResource AppGray}" Duration="0:0:0.5" 
+                                 
+                                    <ColorAnimation To="White" Duration="0:0:0.2" 
                                                     Storyboard.TargetName="textBlock" Storyboard.TargetProperty="Foreground.Color"/>
                                 </Storyboard>
                             </BeginStoryboard>
@@ -33,9 +40,9 @@
                         <EventTrigger RoutedEvent="MouseLeave">
                             <BeginStoryboard>
                                 <Storyboard>
-                                    <ColorAnimation To="Transparent" Duration="0:0:0.5" 
-                                                    Storyboard.TargetName="container" Storyboard.TargetProperty="Background.Color"/>
-                                    <ColorAnimation To="{StaticResource AppBlack}" Duration="0:0:0.5" 
+                                    <ColorAnimation To="Transparent" Duration="0:0:0.2" 
+                                                    Storyboard.TargetName="container" Storyboard.TargetProperty="Background.Color"/>                                 
+                                    <ColorAnimation To="{StaticResource AppBlack}" Duration="0:0:0.2" 
                                                     Storyboard.TargetName="textBlock" Storyboard.TargetProperty="Foreground.Color"/>
                                 </Storyboard>
                             </BeginStoryboard>

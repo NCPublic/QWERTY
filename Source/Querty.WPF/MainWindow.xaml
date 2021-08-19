@@ -6,6 +6,10 @@
         xmlns:local="clr-namespace:Querty.WPF"
         xmlns:custom="clr-namespace:QUERTY.SlidingTextControl;assembly=QUERTY.SlidingTextControl"
         mc:Ignorable="d"
+        x:Name="root"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="400"
+        MinHeight="450"
         Title="QUERTY" Height="600" Width="800">
     <Window.DataContext>
         <local:MainViewModel/>
@@ -18,25 +22,37 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Typing Trainer" FontSize="{StaticResource FontsizeLarge}" HorizontalAlignment="Center" Margin="0 0 0 50"/>
+        <!--Title-->
+        <Border Grid.Row="0" BorderBrush="{StaticResource AppBlackBrush}" BorderThickness="0 0 0 1" Margin="0 0 0 50" HorizontalAlignment="Center" Padding="0 0 0 5">
+            <TextBlock Text="Typing Trainer" FontSize="{StaticResource FontsizeLarge}" HorizontalAlignment="Center"/>            
+        </Border>
 
+        <!--Sliding Text-->
         <StackPanel Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 0 0 50">
-            <custom:SlidingText Text="{Binding TextToType, UpdateSourceTrigger=PropertyChanged}"
-                                FontFamily="{StaticResource RobotoRegular}"
+            <custom:SlidingText Text="{Binding TextToType, UpdateSourceTrigger=PropertyChanged}"                              
+                                FontFamily="{StaticResource RobotoLight}"
                                 FontSize="{StaticResource FontsizeMedium}"
-                                Margin="390 0 0 0" MinWidth="390"/>      
+                                MarkFill="{StaticResource AppBlueBrush}"
+                                Margin="{Binding ActualWidth, ElementName=root, Converter={local:WidthToThicknessConverter}}" 
+                                MinWidth="{Binding ActualWidth, ElementName=root, Converter={local:WidthToMinWidthConverter}}"/>      
         </StackPanel>
 
-        <StackPanel Grid.Row="2" HorizontalAlignment="Center" Width="400">
-            <TextBlock Text="Words to choose from" FontSize="{StaticResource FontsizeSmall}" Margin="0 0 0 20"/>
-            <TextBox FontSize="{StaticResource FontsizeSmall}" TextWrapping="Wrap" Padding="2" Margin="0 0 0 20"
-                         Text="{Binding TextToType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Style="{StaticResource StandardButton}" Content="Generate Practise Text" HorizontalAlignment="Left" Margin="0 0 0 20"/>
-            <ComboBox HorizontalAlignment="Left" Width="100" Height="25" FontSize="{StaticResource FontsizeSmall}">
-                <ComboBoxItem Content="30" FontSize="{StaticResource FontsizeSmall}"/>
-                <ComboBoxItem Content="50" FontSize="{StaticResource FontsizeSmall}"/>
-                <ComboBoxItem Content="100" FontSize="{StaticResource FontsizeSmall}"/>
-            </ComboBox>
+        <StackPanel Grid.Row="2" HorizontalAlignment="Center" MaxWidth="600">
+
+            <!--Seed Label-->
+            <TextBlock Text="Seed Words" FontSize="{StaticResource FontsizeSmall}" FontFamily="{StaticResource RobotoRegular}" Margin="0 0 0 10"/>
+            
+            <!--Seed words-->
+            <Border BorderBrush="{StaticResource AppGrayBrush}" BorderThickness="1" CornerRadius="5" Padding="5"  Margin="0 0 0 20">
+                <TextBox Grid.Column="1" FontSize="{StaticResource FontsizeSmall}" TextWrapping="Wrap" 
+                         BorderBrush="Transparent" BorderThickness="0"
+                         Text="{Binding TextToType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>                
+            </Border>
+            
+            <!--Button to reload-->
+            <Button Style="{StaticResource StandardButton}" VerticalAlignment="Bottom"
+                    Content="Load Excercise" 
+                    HorizontalAlignment="Center" Margin="0 0 20 0"/>
 
         </StackPanel>
     </Grid>
