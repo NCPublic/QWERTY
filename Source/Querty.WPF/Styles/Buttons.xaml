@@ -50,13 +50,6 @@
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter Property="Cursor" Value="Hand"/>
                         </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="RenderTransform">
-                                <Setter.Value>
-                                    <TranslateTransform Y="1"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>
 
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

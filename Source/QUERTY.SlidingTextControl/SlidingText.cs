@@ -66,10 +66,6 @@ namespace QUERTY.SlidingTextControl
         /// </summary>
         private string _lastUserInput = string.Empty;
 
-        /// The next character that needs to be typed
-        /// </summary>
-        private string _nextChar { get { return Text[_index].ToString(); } }
-
         /// <summary>
         /// A list of runs for each character of the text to type
         /// </summary>
@@ -171,7 +167,6 @@ namespace QUERTY.SlidingTextControl
 
         #endregion
 
-
         #region Initialization
 
         /// <summary>
@@ -185,8 +180,6 @@ namespace QUERTY.SlidingTextControl
 
             // Measure the constant character length of a mono spaced font family
             _characterWidth = MeasureString("a").Width;
-
-           
 
             InitializeRuns();
 
@@ -239,6 +232,9 @@ namespace QUERTY.SlidingTextControl
             }            
         }
 
+        /// <summary>
+        /// Registers the generic style from the themes folder
+        /// </summary>
         static SlidingText()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SlidingText), new FrameworkPropertyMetadata(typeof(SlidingText)));
@@ -246,11 +242,13 @@ namespace QUERTY.SlidingTextControl
 
         #endregion
 
+        #region Public methods
+
         /// <summary>
         /// Whenever the text changed, call this method to reset everything
         /// </summary>
         public void Refresh()
-        {
+        {            
             _index = 0;
             _slidedDistance = 0;
 
@@ -263,7 +261,9 @@ namespace QUERTY.SlidingTextControl
             InitializeRuns();
             AnimateToStart();
             EvaulateInput();
-    }
+        }
+
+        #endregion
 
         #region Event handlers
 
@@ -329,15 +329,21 @@ namespace QUERTY.SlidingTextControl
         /// </summary>
         private void EvaulateInput()
         {
-            if (_lastUserInput == _nextChar)
+            // Check wether the next letter was correct
+            if (_lastUserInput == Text[_index].ToString())
             {
+                // If it wasn't wrong before
                 if (_lastInputCorrect)
                 {
+                    // just submit it
                     _textAsRuns[_index].Style = _submittedCorrect;
                 }
+                // Otherwise
                 else
                 {
+                    // Make the background red
                     _textAsRuns[_index].Style = _submittedIncorrect;
+                    // Reset the flag
                     _lastInputCorrect = true;
                 }
 
@@ -347,7 +353,7 @@ namespace QUERTY.SlidingTextControl
             }
             else
             {
-                // After refreshing
+                // Only After refreshing the entire Control
                 if (_lastUserInput == string.Empty)
                 {
                     _textAsRuns[_index].Style = _nextPending;
@@ -355,7 +361,7 @@ namespace QUERTY.SlidingTextControl
                 else
                 { 
                     _lastInputCorrect = false;
-                    if (_nextChar == " ")
+                    if (Text[_index].ToString() == " ")
                     {
                         _textAsRuns[_index].Text = "_";
                     }
@@ -363,7 +369,6 @@ namespace QUERTY.SlidingTextControl
                 }
             }
         }
-
 
         /// <summary>
         /// Slides the text to the left by adding a negative value to its margin 
@@ -389,7 +394,9 @@ namespace QUERTY.SlidingTextControl
             storyboard.Begin(_animatedTextBlock);
         }
 
-
+        /// <summary>
+        /// Slides the textblock back to the starting position
+        /// </summary>
         private void AnimateToStart()
         {
             var newThickness = new Thickness(0);
@@ -397,8 +404,9 @@ namespace QUERTY.SlidingTextControl
             var storyboard = new Storyboard();
             var slidingAnimation = new ThicknessAnimation()
             {
-                Duration = new Duration(TimeSpan.FromMilliseconds(500)),
+                Duration = new Duration(TimeSpan.FromMilliseconds(100)),
                 To = newThickness,
+                DecelerationRatio = 0.9f,
             };
 
             Storyboard.SetTargetProperty(slidingAnimation, new PropertyPath("Margin"));
