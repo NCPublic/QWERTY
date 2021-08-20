@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         x:Name="root"
         WindowStartupLocation="CenterScreen"
-        MinWidth="400"
-        MinHeight="500"
+        MinWidth="550"
+        MinHeight="550"
         Title="QUERTY" Height="600" Width="800">
     <Window.DataContext>
         <local:MainViewModel/>
@@ -30,7 +30,7 @@
             
             <!--Title-->
             <TextBlock Text="Typing Trainer" 
-                       FontSize="{StaticResource FontsizeLarge}" 
+                       FontSize="{StaticResource FontsizeXLarge}" 
                        HorizontalAlignment="Center"/>            
         </Border>
 
@@ -53,6 +53,7 @@
                         <Setter Property="MinWidth" Value="{Binding ActualWidth, ElementName=root, Converter={local:WidthToMinWidthConverter}}"/>
                         <Setter Property="TypedCharacters" Value="{Binding CurrentIndex, Mode=OneWayToSource}"/>
                         <Setter Property="TypingMistakes" Value="{Binding Mistakes, Mode=OneWayToSource}"/>
+                       
                     </Style>
                 </ContentControl.Resources>
             </ContentControl>
@@ -61,6 +62,7 @@
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" MaxWidth="600">
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                
                 <!--Character count-->
                 <local:SingleResultControl DisplayText="Characters"
                                            DisplayValue="{Binding CurrentIndex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
@@ -77,8 +79,8 @@
                 <local:SingleResultControl DisplayText="Time"
                                            DisplayValue="{Binding EllapsedTime, StringFormat={}{0:mm}:{0:ss}}"/>
 
-                <!--Clicks per minute-->
-                <local:SingleResultControl DisplayText="Clicks/Minute"
+                <!--Speed-->
+                <local:SingleResultControl DisplayText="Char./Sec."
                                            DisplayValue="{Binding TypingSpeed, StringFormat={}{0:N2}}"/>
 
             </StackPanel>
@@ -87,19 +89,26 @@
                     BorderThickness="1" 
                     CornerRadius="5" 
                     Padding="5"  
-                    Margin="0 0 0 20">
+                    Margin="0 0 0 2">
                 
                 <!--Seed words-->
                 <TextBox x:Name="seed" Grid.Column="1" 
                          FontFamily="{StaticResource RobotoLight}"
                          FontSize="{StaticResource FontsizeSmall}" 
-                         Text="{Binding TemplateText}"
+                         Text="{Binding TemplateText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          TextWrapping="Wrap" 
                          MinHeight="150" MinWidth="450"
                          BorderBrush="Transparent" 
-                         BorderThickness="0"/>                
+                         BorderThickness="0">                
+                </TextBox>                
             </Border>
-            
+
+            <TextBlock Text="5 - 200 characters allowed" 
+                       HorizontalAlignment="Center" 
+                       FontFamily="{StaticResource RobotoLight}"
+                       FontSize="{StaticResource FontsizeXSmall}" 
+                       Margin="0 0 0 20"/>
+
             <!--Button to reload-->
             <Button Style="{StaticResource StandardButton}" 
                     Command="{Binding RefreshCommand}"

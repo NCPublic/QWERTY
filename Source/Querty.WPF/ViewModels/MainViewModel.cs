@@ -1,5 +1,10 @@
 ﻿using QUERTY.SlidingTextControl;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -13,12 +18,7 @@ namespace Querty.WPF
         #region Private fields
 
         private string _startupText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
-                "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris " +
-                "nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in " +
-                "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla " +
-                "pariatur. Excepteur sint occaecat cupidatat non proident, sunt in " +
-                "culpa qui officia deserunt mollit anim id est laborum";
+                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ";
 
 
         private string _templateText = "";
@@ -45,13 +45,14 @@ namespace Querty.WPF
             set
             {
                 _templateText = value;
+               
                 OnPropertyChanged(nameof(TemplateText));
             }
-        }
+        }       
 
-        /// <summary>
-        /// The text the user has to type
-        /// </summary>
+        ///// <summary>
+        ///// The text the user has to type
+        ///// </summary>
         public string TextToType
         {
             get
@@ -64,7 +65,6 @@ namespace Querty.WPF
                 OnPropertyChanged(nameof(TextToType));
             }
         }
-
 
         /// <summary>
         /// The control that displays the text and slides it to the left while the user is typing
@@ -103,7 +103,6 @@ namespace Querty.WPF
                 OnPropertyChanged(nameof(Accuarcy));
             }
         }
-
 
         /// <summary>
         /// The mistakes the user made while typing this excercise
@@ -148,7 +147,7 @@ namespace Querty.WPF
         /// <summary>
         /// The words per minute for the current typing session
         /// </summary>
-        public double TypingSpeed { get { return CurrentIndex / EllapsedTime.TotalMinutes; } }
+        public double TypingSpeed { get { return CurrentIndex / EllapsedTime.TotalSeconds; } }
 
         #endregion
 
@@ -158,6 +157,7 @@ namespace Querty.WPF
         /// The command to populate the sliding text control with the text from the seed box
         /// </summary>
         public ICommand RefreshCommand { get; private set; }
+
 
         #endregion
 
@@ -170,19 +170,30 @@ namespace Querty.WPF
         {
             TemplateText = _startupText;
             TextToType = TemplateText;
+
             SlidingTextControl = new SlidingText();
-            RefreshCommand = new RelayCommand(UpdateControls);
+            SlidingTextControl.TypingFinished += OnTypingFinished;
+         
+
+            RefreshCommand = new UpdateCommand(this);
             InitializeTimer();
         }
 
-        #endregion   
+        private void OnTypingFinished()
+        {
+            StopTimer();
+            MessageBox.Show("Click ok to start again");
+            UpdateControls();
+        }
+
+        #endregion
 
         #region Private helpers
 
         /// <summary>
         /// Reload the control with the text in the seed box
         /// </summary>
-        private void UpdateControls()
+        public void UpdateControls()
         {
             TextToType = TemplateText;
             SlidingTextControl.Refresh();
@@ -230,6 +241,7 @@ namespace Querty.WPF
             OnPropertyChanged(nameof(EllapsedTime));
             OnPropertyChanged(nameof(TypingSpeed));
         }
+      
     }
     #endregion
 }

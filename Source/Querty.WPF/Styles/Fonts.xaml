@@ -7,9 +7,12 @@
     <FontFamily x:Key="RobotoBold">pack://application:,,,/Resources/Fonts/#Roboto Mono Bold</FontFamily>
 
     <!--Font sizes-->
+    <system:Double x:Key="FontsizeXSmall" >12</system:Double>
     <system:Double x:Key="FontsizeSmall" >14</system:Double>
-    <system:Double x:Key="FontsizeMedium" >24</system:Double>
-    <system:Double x:Key="FontsizeLarge" >36</system:Double>
+    <system:Double x:Key="FontsizeMedium" >20</system:Double>
+    <system:Double x:Key="FontsizeLarge" >28</system:Double>
+    <system:Double x:Key="FontsizeXLarge" >36</system:Double>
+    
     
     <!--Base style for all controls-->
     <Style TargetType="Control" x:Key="BaseStyleControl">

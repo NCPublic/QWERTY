@@ -41,12 +41,32 @@ namespace QUERTY.SlidingTextControl
         /// <summary>
         /// Index to go thorugh the texts characters
         /// </summary>
-        private static int _index = 0;
+        private int _index;
+        
+        /// <summary>
+        /// The current index that needs to be typed
+        /// </summary>
+        public int Index
+        {
+            get { return _index; }
+            set
+            {
+                if (value < Text.Length)
+                    _index = value;
+                else
+                    TypingFinished?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// Public event fired when the last charcter has been typed
+        /// </summary>
+        public event Action TypingFinished = () => { };
 
         /// <summary>
         /// The number of mistakes made by the user
         /// </summary>
-        private static int _mistakes = 0;
+        private int _mistakes = 0;
 
         /// <summary>
         /// The constant width of a character assuming the font family is mono spaced
@@ -281,7 +301,7 @@ namespace QUERTY.SlidingTextControl
         /// </summary>
         public void Refresh()
         {
-            _index = 0;
+            Index = 0;
             TypedCharacters = 0;
 
             _mistakes = 0;
@@ -311,7 +331,7 @@ namespace QUERTY.SlidingTextControl
         /// <param name="e"></param>
         private void AnimatedSliding_Loaded(object sender, RoutedEventArgs e)
         {
-            _textAsRuns[_index].Style = _nextPending;
+            _textAsRuns[Index].Style = _nextPending;
         }
 
         /// <summary>
@@ -367,24 +387,27 @@ namespace QUERTY.SlidingTextControl
         private void EvaulateInput()
         {
             // Check wether the next letter was correct
-            if (_lastUserInput == Text[_index].ToString())
+            if (_lastUserInput == Text[Index].ToString())
             {
                 // If it wasn't wrong before
                 if (_lastInputCorrect)
                 {
                     // just submit it
-                    _textAsRuns[_index].Style = _submittedCorrect;
+                    _textAsRuns[Index].Style = _submittedCorrect;
                 }
                 // Otherwise
                 else
                 {
                     // Make the background red
-                    _textAsRuns[_index].Style = _submittedIncorrect;
+                    _textAsRuns[Index].Style = _submittedIncorrect;
                     // Reset the flag
                     _lastInputCorrect = true;
                 }
 
-                _textAsRuns[_index + 1].Style = _nextPending;
+                if(Index < Text.Length - 1)
+                {
+                    _textAsRuns[Index + 1].Style = _nextPending;                    
+                }
                 AnimateTextBlockSlide();
                 IncreaseIndex();
             }
@@ -393,17 +416,17 @@ namespace QUERTY.SlidingTextControl
                 // Only After refreshing the entire Control
                 if (_lastUserInput == string.Empty)
                 {
-                    _textAsRuns[_index].Style = _nextPending;
+                    _textAsRuns[Index].Style = _nextPending;
                 }
                 else
                 {
                     IncreaseMistakes();
                     _lastInputCorrect = false;
-                    if (Text[_index].ToString() == " ")
+                    if (Text[Index].ToString() == " ")
                     {
-                        _textAsRuns[_index].Text = "_";
+                        _textAsRuns[Index].Text = "_";
                     }
-                    _textAsRuns[_index].Style = _nextIncorrect;
+                    _textAsRuns[Index].Style = _nextIncorrect;
                 }
             }
         }
@@ -442,7 +465,7 @@ namespace QUERTY.SlidingTextControl
             var storyboard = new Storyboard();
             var slidingAnimation = new ThicknessAnimation()
             {
-                Duration = new Duration(TimeSpan.FromMilliseconds(100)),
+                Duration = new Duration(TimeSpan.FromMilliseconds(SlideTimeMS)),
                 To = newThickness,
                 DecelerationRatio = 0.9f,
             };
@@ -462,7 +485,7 @@ namespace QUERTY.SlidingTextControl
         /// </summary>
         private void IncreaseMistakes()
         {
-            if (_index < Text.Length && _lastInputCorrect)
+            if (Index < Text.Length && _lastInputCorrect)
             {
                 _mistakes++;
                 TypingMistakes = _mistakes;
@@ -474,10 +497,10 @@ namespace QUERTY.SlidingTextControl
         /// </summary>
         private void IncreaseIndex()
         {
-            if (_index < Text.Length)
+            if (Index < Text.Length)
             {
-                _index++;
-                TypedCharacters = _index;
+                Index++;
+                TypedCharacters = Index;
             }
         }
 
