@@ -1,19 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace QUERTY.SlidingTextControl
 {
@@ -50,6 +42,11 @@ namespace QUERTY.SlidingTextControl
         /// Index to go thorugh the texts characters
         /// </summary>
         private static int _index = 0;
+
+        /// <summary>
+        /// The number of mistakes made by the user
+        /// </summary>
+        private static int _mistakes = 0;
 
         /// <summary>
         /// The constant width of a character assuming the font family is mono spaced
@@ -129,7 +126,7 @@ namespace QUERTY.SlidingTextControl
         /// Default value is <see cref="Brushes.CornflowerBlue"/>
         /// </summary>
         public static readonly DependencyProperty MarkFillProperty =
-            DependencyProperty.Register("MarkFill", typeof(SolidColorBrush), typeof(SlidingText), new PropertyMetadata(Brushes.CornflowerBlue));
+            DependencyProperty.Register(nameof(MarkFill), typeof(SolidColorBrush), typeof(SlidingText), new PropertyMetadata(Brushes.CornflowerBlue));
 
 
         /// <summary>
@@ -146,7 +143,7 @@ namespace QUERTY.SlidingTextControl
         /// Default value is <see cref="150"/> miliseconds
         /// </summary>
         public static readonly DependencyProperty SlideTimeMSProperty =
-            DependencyProperty.Register("SlideTimeMS", typeof(int), typeof(SlidingText), new PropertyMetadata(150));
+            DependencyProperty.Register(nameof(SlideTimeMS), typeof(int), typeof(SlidingText), new PropertyMetadata(150));
 
 
         /// <summary>
@@ -162,7 +159,42 @@ namespace QUERTY.SlidingTextControl
         /// Dependency property for bold letters as custom font family
         /// </summary>
         public static readonly DependencyProperty BoldFontFamilyProperty =
-            DependencyProperty.Register("BoldFontFamily", typeof(FontFamily), typeof(SlidingText), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(BoldFontFamily), typeof(FontFamily), typeof(SlidingText), new PropertyMetadata(null));
+
+
+        /// <summary>
+        /// The current index the user is on
+        /// </summary>
+        public int TypedCharacters
+        {
+            get { return (int)GetValue(TypedCharactersProperty); }
+            set { SetValue(TypedCharactersProperty, value); }
+        }
+
+        /// <summary>
+        /// Dependency property for the index of the current character that the user is typing
+        /// </summary>
+        public static readonly DependencyProperty TypedCharactersProperty =
+            DependencyProperty.Register(nameof(TypedCharacters), typeof(int), typeof(SlidingText), new PropertyMetadata(0));
+
+
+
+        /// <summary>
+        /// The number of mistakes that were made by the user
+        /// </summary>
+        public int TypingMistakes
+        {
+            get { return (int)GetValue(TypingMistakesProperty); }
+            set { SetValue(TypingMistakesProperty, value); }
+        }
+
+        /// <summary>
+        /// Dependency property for the number of mistakes that were made by the user
+        /// </summary>
+        public static readonly DependencyProperty TypingMistakesProperty =
+            DependencyProperty.Register(nameof(TypingMistakes), typeof(int), typeof(SlidingText), new PropertyMetadata(0));
+
+
 
 
         #endregion
@@ -229,7 +261,7 @@ namespace QUERTY.SlidingTextControl
                 var nextRun = new Run(Text[i].ToString());
                 _textAsRuns[i] = nextRun;
                 _animatedTextBlock.Inlines.Add(nextRun);
-            }            
+            }
         }
 
         /// <summary>
@@ -248,8 +280,13 @@ namespace QUERTY.SlidingTextControl
         /// Whenever the text changed, call this method to reset everything
         /// </summary>
         public void Refresh()
-        {            
+        {
             _index = 0;
+            TypedCharacters = 0;
+
+            _mistakes = 0;
+            TypingMistakes = 0;
+
             _slidedDistance = 0;
 
             _animatedTextBlock.Inlines.Clear();
@@ -349,7 +386,7 @@ namespace QUERTY.SlidingTextControl
 
                 _textAsRuns[_index + 1].Style = _nextPending;
                 AnimateTextBlockSlide();
-                _index++;
+                IncreaseIndex();
             }
             else
             {
@@ -359,13 +396,14 @@ namespace QUERTY.SlidingTextControl
                     _textAsRuns[_index].Style = _nextPending;
                 }
                 else
-                { 
+                {
+                    IncreaseMistakes();
                     _lastInputCorrect = false;
                     if (Text[_index].ToString() == " ")
                     {
                         _textAsRuns[_index].Text = "_";
                     }
-                    _textAsRuns[_index].Style = _nextIncorrect;                
+                    _textAsRuns[_index].Style = _nextIncorrect;
                 }
             }
         }
@@ -418,6 +456,30 @@ namespace QUERTY.SlidingTextControl
         #endregion
 
         #region Private helpers
+
+        /// <summary>
+        /// Add 1 to the number of mistakes
+        /// </summary>
+        private void IncreaseMistakes()
+        {
+            if (_index < Text.Length && _lastInputCorrect)
+            {
+                _mistakes++;
+                TypingMistakes = _mistakes;
+            }
+        }
+
+        /// <summary>
+        /// Add one to the current index
+        /// </summary>
+        private void IncreaseIndex()
+        {
+            if (_index < Text.Length)
+            {
+                _index++;
+                TypedCharacters = _index;
+            }
+        }
 
         /// <summary>
         /// Determines the actual size of a character with its current properties for fontsize, fontfamily, etc...

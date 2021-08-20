@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31605.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Querty.WPF", "Querty.WPF.csproj", "{DA555ACC-129C-4CAC-ABCA-D19C146F5931}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Querty.WPF", "Querty.WPF.csproj", "{DA555ACC-129C-4CAC-ABCA-D19C146F5931}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QUERTY.SlidingTextControl", "..\QUERTY.SlidingTextControl\QUERTY.SlidingTextControl.csproj", "{76033450-85A1-4F6D-BD5A-8765C5ED652B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Querty.SlidingTextControl", "..\QUERTY.SlidingTextControl\Querty.SlidingTextControl.csproj", "{76033450-85A1-4F6D-BD5A-8765C5ED652B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

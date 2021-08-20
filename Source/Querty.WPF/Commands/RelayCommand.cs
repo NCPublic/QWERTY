@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 
 namespace Querty.WPF
@@ -22,7 +20,7 @@ namespace Querty.WPF
 
             _execute = execute;
             _canExecute = canExecute;
-        }        
+        }
 
         public bool CanExecute(object parameter)
         {
@@ -32,12 +30,12 @@ namespace Querty.WPF
         public void Execute(object parameter)
         {
             _execute.Invoke((T)parameter);
-        }     
+        }
     }
 
     public class RelayCommand : RelayCommand<object>
     {
-        public RelayCommand(Action execute) : base (_ => execute())
+        public RelayCommand(Action execute) : base(_ => execute())
         {
 
         }

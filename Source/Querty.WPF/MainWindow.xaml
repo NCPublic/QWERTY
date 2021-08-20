@@ -51,12 +51,37 @@
                         <Setter Property="MarkFill" Value="{StaticResource AppBlueBrush}"/>
                         <Setter Property="Margin" Value="{Binding ActualWidth, ElementName=root, Converter={local:WidthToThicknessConverter}}"/>
                         <Setter Property="MinWidth" Value="{Binding ActualWidth, ElementName=root, Converter={local:WidthToMinWidthConverter}}"/>
+                        <Setter Property="TypedCharacters" Value="{Binding CurrentIndex, Mode=OneWayToSource}"/>
+                        <Setter Property="TypingMistakes" Value="{Binding Mistakes, Mode=OneWayToSource}"/>
                     </Style>
                 </ContentControl.Resources>
             </ContentControl>
         </StackPanel>
 
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" MaxWidth="600">
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <!--Character count-->
+                <local:SingleResultControl DisplayText="Characters"
+                                           DisplayValue="{Binding CurrentIndex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!--Mistake count-->
+                <local:SingleResultControl DisplayText="Mistakes" 
+                                           DisplayValue="{Binding Mistakes, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <!--Error rate-->
+                <local:SingleResultControl DisplayText="Error Rate"
+                                           DisplayValue="{Binding Accuarcy, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2} %}"/>
+
+                <!--Ellapsed time-->
+                <local:SingleResultControl DisplayText="Time"
+                                           DisplayValue="{Binding EllapsedTime, StringFormat={}{0:mm}:{0:ss}}"/>
+
+                <!--Clicks per minute-->
+                <local:SingleResultControl DisplayText="Clicks/Minute"
+                                           DisplayValue="{Binding TypingSpeed, StringFormat={}{0:N2}}"/>
+
+            </StackPanel>
 
             <Border BorderBrush="{StaticResource AppGrayBrush}" 
                     BorderThickness="1" 
@@ -79,7 +104,7 @@
             <Button Style="{StaticResource StandardButton}" 
                     Command="{Binding RefreshCommand}"
                     VerticalAlignment="Bottom" 
-                    Content="Load Excercise" 
+                    Content="Reset" 
                     HorizontalAlignment="Center" 
                     Margin="0 0 20 0"/>
 
