@@ -18,7 +18,7 @@ namespace Querty.WPF
         #region Private fields
 
         private string _startupText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ";
+                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
 
         private string _templateText = "";

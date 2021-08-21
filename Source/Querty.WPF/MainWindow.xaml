@@ -97,7 +97,7 @@
                          FontSize="{StaticResource FontsizeSmall}" 
                          Text="{Binding TemplateText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                          TextWrapping="Wrap" 
-                         MinHeight="150" MinWidth="450"
+                         MinHeight="150" Width="500"
                          BorderBrush="Transparent" 
                          BorderThickness="0">                
                 </TextBox>                
