@@ -105,7 +105,7 @@ namespace Querty.WPF
         }
 
         /// <summary>
-        /// The mistakes the user made while typing this excercise
+        /// The number mistakes the user made while typing this excercise
         /// </summary>
         public int Mistakes
         {
@@ -129,9 +129,9 @@ namespace Querty.WPF
             get
             {
                 if (CurrentIndex == 0)
-                    return 0.00;
+                    return 100.00;
                 else
-                    return Math.Round(100 * (double)Mistakes / CurrentIndex, 2);
+                    return Math.Round(100 * (1 - (double)Mistakes / CurrentIndex), 2);
             }
 
         }

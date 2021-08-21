@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QUERTY.SlidingTextControl\Querty.SlidingTextControl.csproj" />
+    <ProjectReference Include="..\QUERTY.SlidingTextControl\Qwerty.SlidingTextControl.csproj" />
   </ItemGroup>
 
   <ItemGroup>

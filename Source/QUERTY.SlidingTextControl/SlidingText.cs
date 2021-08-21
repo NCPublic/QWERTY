@@ -69,6 +69,11 @@ namespace QUERTY.SlidingTextControl
         private int _mistakes = 0;
 
         /// <summary>
+        /// The last input by the user (case sensitive characters and space)
+        /// </summary>
+        private string _lastUserInput = string.Empty;
+
+        /// <summary>
         /// The constant width of a character assuming the font family is mono spaced
         /// </summary>
         private double _characterWidth = 0;
@@ -77,11 +82,6 @@ namespace QUERTY.SlidingTextControl
         /// The total distance to slide to
         /// </summary>
         private double _slidedDistance = 0;
-
-        /// <summary>
-        /// The last input by the user (case sensitive characters and space)
-        /// </summary>
-        private string _lastUserInput = string.Empty;
 
         /// <summary>
         /// A list of runs for each character of the text to type
@@ -213,8 +213,6 @@ namespace QUERTY.SlidingTextControl
         /// </summary>
         public static readonly DependencyProperty TypingMistakesProperty =
             DependencyProperty.Register(nameof(TypingMistakes), typeof(int), typeof(SlidingText), new PropertyMetadata(0));
-
-
 
 
         #endregion
